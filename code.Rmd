@@ -1,4 +1,4 @@
-## The prettypalette
+# The prettypalette
 #### The purpose of this package is to create a red/green color blind friendly color palette. 
 
 df : 657 rows, 3 columns. 
