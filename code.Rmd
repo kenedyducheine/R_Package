@@ -1,0 +1,83 @@
+## The prettypalette
+#### The purpose of this package is to create a red/green color blind friendly color palette. 
+
+df : 657 rows, 3 columns. 
+    rows: correspond to the index of the built in R colors 
+    ex. df[47] corrosponds to the 47th color of built in R colors
+    columns: correspond to the RBG value of the color
+
+colors_df : 657 rows, 1 column
+    rows: color name
+    columns: "colors"
+blue_colors : subset of the df where the color is clearly a shade of blue. 
+              for all such colors the rbg blue value = 255 and red is less than 
+              or equal to 128
+red_colors : subset of the df where the color is clearly a shade of red. 
+             for all such colors the rbg red value = 255 and blue is less than 
+             or equal to 128
+green_colors : subset of the df where the color is clearly a shade of green. 
+               for all such colors the rbg green value = 255 and red is less than 
+               or equal to 128
+
+```{r}
+colorframe <- function(){
+ 
+    df <- data.frame(col2rgb(colors(), alpha = FALSE))
+    df <- as.data.frame(t(df))
+    colors_df <- (data.frame(colors()))
+    blue_colors <- df[df$blue == 255 & df$red <= 128, ]
+    green_colors <- df[df$green == 255 & df$red <= 128, ]
+    red_colors <- df[df$red == 255 & df$blue <= 128, ]
+    
+    return(list(
+            colors_df = colors_df,
+            blue_colors = blue_colors,
+            green_colors = green_colors,
+            red_colors = red_colors
+        ))
+}
+
+```
+
+When an individual is red/green color blind, it means they cannot distinguish from red or green from one another because of defective receptors in the eyes. A color palette containing either green or red aims to elimate some of the difficulty a colorblind person experiences.
+
+```{r}
+palette <- function(colors){
+    green_colors <- colors$green_colors
+    blue_colors <- colors$blue_colors
+    red_colors <- colors$red_colors
+
+    # first color: red OR green 
+    color1 <- sample(c(
+    sample(rownames(green_colors), 1),  
+    sample(rownames(red_colors), 1)    
+    ), 1)
+   
+    # second color: blue 
+    color2 <- sample(rownames(blue_colors), 1)
+
+    # third color: a color that is not explictly a shade of red/green/blue 
+    original_colors <- df[!(rownames(df) %in% c(
+    rownames(blue_colors),
+    rownames(red_colors),
+    rownames(green_colors)
+    )), ]
+
+    color3 <- rownames(original_colors)[sample(nrow(original_colors), 1)]
+
+    #create color palette
+    selected_colors <- gsub("X", "", c(color1, color2, color3))
+    pretty_palette <- as.vector(as.matrix(colors_df[selected_colors, , drop = FALSE]))
+ 
+    return(pretty_palette)
+}
+
+```
+
+
+Let's run our functions!
+```{r}
+colordata <- colorframe()
+prettypal <- palette(colordata)
+print(prettypal)
+```
