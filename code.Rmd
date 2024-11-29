@@ -1,9 +1,24 @@
 ## The prettypalette
 #### The purpose of this package is to create a red/green color blind friendly color palette. 
+The colors are chosen from the base R colors. 
+
+```{r}
+# creates S4 class called "palette"
+setClass("palette", #name 
+        representation(
+            classification = "character", #list
+            size = "numeric", #size is always 3
+            cb_friendly = "logical", #color blind frinedly 
+            colors = "vector" #palette colors returned here 
+  )
+)
+
+```
+
 
 df : 657 rows, 3 columns. 
-    rows: correspond to the index of the built in R colors 
-    ex. df[47] corrosponds to the 47th color of built in R colors
+    rows: correspond to the index of the built-in R colors 
+    ex. df[47] corresponds to the 47th color of built-in R colors
     columns: correspond to the RBG value of the color
 
 colors_df : 657 rows, 1 column
@@ -20,45 +35,46 @@ green_colors : subset of the df where the color is clearly a shade of green.
                or equal to 128
 
 ```{r}
+#creates a df of optimal colors. see above for more details.
 colorframe <- function(){
- 
-    df <- data.frame(col2rgb(colors(), alpha = FALSE))
-    df <- as.data.frame(t(df))
-    colors_df <- (data.frame(colors()))
-    blue_colors <- df[df$blue == 255 & df$red <= 128, ]
-    green_colors <- df[df$green == 255 & df$red <= 128, ]
-    red_colors <- df[df$red == 255 & df$blue <= 128, ]
+    df <- data.frame(col2rgb(colors(), alpha = FALSE)) #color df with Hex
+    df <- as.data.frame(t(df)) #transpose 
+    colors_df <- (data.frame(colors())) #creates color df with names
+    blue_colors <- df[df$blue == 255 & df$red <= 128, ] #blue colors
+    green_colors <- df[df$green == 255 & df$red <= 128, ]#green colors
+    red_colors <- df[df$red == 255 & df$blue <= 128, ] #red colors
     
     return(list(
             colors_df = colors_df,
             blue_colors = blue_colors,
             green_colors = green_colors,
             red_colors = red_colors
-        ))
+))
 }
 
 ```
 
-When an individual is red/green color blind, it means they cannot distinguish from red or green from one
+When an individual is red/green color blind, it means they experience distinguish red or green from one
 another because of defective receptors in the eyes. A color palette containing either green or red aims to 
-elimate some of the difficulty a colorblind person experiences.
+eliminate some of the difficulties a colorblind person experiences.
 
 ```{r}
+# creates the color palette
 palette <- function(colors){
     green_colors <- colors$green_colors
     blue_colors <- colors$blue_colors
     red_colors <- colors$red_colors
 
-    # first color: red OR green 
+    # first color: red OR green
     color1 <- sample(c(
-    sample(rownames(green_colors), 1),  
-    sample(rownames(red_colors), 1)    
+    sample(rownames(green_colors), 1),
+    sample(rownames(red_colors), 1)
     ), 1)
    
-    # second color: blue 
+    # second color: blue
     color2 <- sample(rownames(blue_colors), 1)
 
-    # third color: a color that is not explictly a shade of red/green/blue 
+    # third color: a color that is not explicitly a shade of red/green/blue
     original_colors <- df[!(rownames(df) %in% c(
     rownames(blue_colors),
     rownames(red_colors),
@@ -70,8 +86,9 @@ palette <- function(colors){
     #create color palette
     selected_colors <- gsub("X", "", c(color1, color2, color3))
     pretty_palette <- as.vector(as.matrix(colors_df[selected_colors, , drop = FALSE]))
- 
-    return(pretty_palette)
+
+    pal <- new("palette", classification = "color palette", size = 3, cb_friendly = TRUE, colors = pretty_palette)
+    return(pal)
 }
 
 ```
@@ -81,5 +98,5 @@ Let's run our functions!
 ```{r}
 colordata <- colorframe()
 prettypal <- palette(colordata)
-print(prettypal)
+prettypal@colors
 ```
