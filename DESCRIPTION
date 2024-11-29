@@ -1,10 +1,10 @@
 Package: prettypalette
 Type: Package
 Title: Aesthetically Pleasing Color Palette
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Author: "Kenedy", "Ducheine", role = c("aut","cre")
 Maintainer: ducheine3@usf.edu
-Description: This package outputs red/green colorblind friendly color palettes. 
+Description: This package outputs red/green colorblind-friendly color palettes. 
 Depends: R (>= 3.1.2)
 License: CC0
 Encoding: UTF-8
