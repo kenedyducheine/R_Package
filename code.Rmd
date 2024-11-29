@@ -1,5 +1,3 @@
-## The prettypalette
-#### The purpose of this package is to create a red/green color blind friendly color palette. 
 The colors are chosen from the base R colors. 
 
 ```{r}
@@ -85,9 +83,9 @@ palette <- function(colors){
 
     #create color palette
     selected_colors <- gsub("X", "", c(color1, color2, color3))
-    pretty_palette <- as.vector(as.matrix(colors_df[selected_colors, , drop = FALSE]))
+    interior_palette <- as.vector(as.matrix(colors_df[selected_colors, , drop = FALSE]))
 
-    pal <- new("palette", classification = "color palette", size = 3, cb_friendly = TRUE, colors = pretty_palette)
+    pal <- new("palette", classification = "color palette", size = 3, cb_friendly = TRUE, colors = interior_palette)
     return(pal)
 }
 
@@ -97,6 +95,6 @@ palette <- function(colors){
 Let's run our functions!
 ```{r}
 colordata <- colorframe()
-prettypal <- palette(colordata)
-prettypal@colors
+cbpal <- palette(colordata)
+cbpal@colors
 ```
