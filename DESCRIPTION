@@ -1,6 +1,6 @@
-Package: prettypalette
+Package: colorblindpalette
 Type: Package
-Title: Aesthetically Pleasing Color Palette
+Title: Red/Green Colorblind Friendly Color Palette
 Version: 0.0.1.0000
 Author: "Kenedy", "Ducheine", role = c("aut","cre")
 Maintainer: ducheine3@usf.edu
