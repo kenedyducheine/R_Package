@@ -3,7 +3,7 @@ Type: Package
 Title: Red/Green Colorblind Friendly Color Palette
 Version: 0.0.1.0000
 Author: "Kenedy", "Ducheine", role = c("aut","cre")
-Maintainer: ducheine3@usf.edu
+Maintainer: Kenedy Ducheine <ducheine3@usf.edu>
 Description: This package outputs red/green colorblind-friendly color palettes. 
 Depends: R (>= 3.1.2)
 License: CC0
